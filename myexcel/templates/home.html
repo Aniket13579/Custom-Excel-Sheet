@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<script src="{% static 'myscript.js' %}"></script>
+	<title></title>
+</head>
+
+<style type="text/css">
+	p,footer{
+		font-family: 'Luxurious Roman', cursive;
+	}
+	
+	h2{
+		font-family: 'Luxurious Roman', cursive;
+		margin-top:0.3%;
+		margin-left:2%;
+		color:white;
+		float:left;
+	}
+
+	#searchBtn{
+		float:right;
+		margin-top:0.3%;
+		width:10%;
+		font-family: 'Luxurious Roman', cursive;
+		border-radius:3px;
+		background-color:white;
+		border: 0.5px solid black;
+		padding:5px;
+		margin-right:10%;
+	}
+	
+	#time_so{
+		color:#fff;
+		position: absolute;
+		margin-top: 1%;
+		margin-left: 10%;
+		font-family: 'Luxurious Roman', cursive;
+		font-size: 16px;
+	}
+	
+	table{
+        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 3%;
+        background-color: #D3D3D3;
+        position: fixed;
+        border: 1px solid #000;
+    }
+
+	#Menu {
+		position: absolute;
+		text-align: center;
+	}
+
+	#Menu ul {
+		padding: 0px;
+		margin: 0px;
+		width: 150px;
+		list-style: none;
+	}
+
+	#Menu ul li {
+		padding-bottom: 7px;
+		padding-top: 7px;
+		color: #fff;
+	}
+
+	#Menu ul li:hover {
+		background: darkgray;
+		border: 1px solid green;
+	}
+
+	.modal {
+	display: none; 
+	position: fixed; 
+	z-index: 1; 
+	padding-top: 100px; 
+	left: 0;
+	top: 0;
+	width: 100%; 
+	height: 100%; 
+	overflow: auto; 
+	background-color:#0001; 
+	}
+
+	.modal-content {
+	background-color: #fff;
+	margin: auto;
+	margin-top:10%;
+	padding: 20px;
+	border: 2px solid #888;
+	width: 50%;
+	height:30%;
+	}
+
+	.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	}
+
+	.close:hover,
+	.close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+	}
+
+	#editText{
+		display: none;
+	}
+	#editText:hover{
+		display: inline-block;
+	}
+
+</style>
+
+<body>
+	<div id="Menu" class="Menu" style="display: none; cursor:pointer">
+		<ul>
+			<li onclick="sort('quick')">Quick Sort</li>
+			<li onclick="sort('selection')">Selection Sort</li>
+			
+		</ul>
+	</div>
+	<div id="upper_div" style="background-color: #1D6F42;position: absolute;left: 0;right: 0;top: 0;bottom: 0;">
+		<h2>Custom Excel Sheet:</h2>
+		<span id="time_so"></span>
+		<button type="submit" id="searchBtn" onclick="search()">Search Element</button>
+	</div>
+
+	<div id="myModal" class="modal">
+
+		<div class="modal-content">
+			<span class="close">&times;</span>
+		  <p>Enter value to be searhed: <input type="text" id="search_elem" name="search_elem" style="width:30%;padding:5px"></p>
+		  <p><input type="radio" name="typeSearch" id="typeSearch1" value="Linear Search" onclick="setChoice('Linear')">Linear Search</p>
+			<p><input type="radio" name="typeSearch" id="typeSearch2"  value="Binary Search" onclick="setChoice('Binary')">Binary Search</p>
+		<center><button type="submit" onclick="search2()">SEARCH</button></center>
+		<span id="time_s"></span>
+	</div>
+	  
+	  </div>
+	<form>
+	
+    <table cellspacing="0" cellpadding="0"> 
+	    <tr style="background-color: green;">
+		<th> <input type="text" value="Sr No."  maxlength="1" size="1" readonly> </th>
+	    {% for i in "ABCDEFGHIJKLMNOPQR"|rjust:cols %}
+		    <th id="thTag"> <input type="text" id="{{i}}" value="{{i}}"  maxlength="6" size="6" style="cursor: pointer;border-radius: 5%;border: 0.1px solid #D3D3D3;text-align: center;" onclick="selectColumn('{{i}}')" oncontextmenu="rightClick(event)" readonly> </th>
+		{% endfor %}
+	    </tr>
+	    {% for j in range %}
+	    <tr>
+	    	<td><input type="text" name="serial" value="{{j}}" maxlength="2" size="2" style="cursor: pointer;text-align: center;background-color: #E8E8E8;border: none;" onclick="selectRow('{{j}}')" readonly></td>
+	    	{% for i in "ABCDEFGHIJKLMNOPQR"|rjust:cols %}
+	        <td> <input type="text" value="" name="{{i}}{{ j }}" id="{{i}}{{j}}" maxlength="10" size="6" style="border-radius: 5%;border: 0.1px solid #D3D3D3;" onkeyup="below_cell('{{i}}+{{j}}')" onclick="rm_select()" onkeypress="checkDist('{{i}}{{j}}')" spellcheck="false"> </td>
+	        {% endfor %}
+	    </tr>
+	   	{% endfor %}
+
+    </table><br>
+	</form>
+	<footer style="position: absolute;bottom: 0;color: #fff;left: 30%;">
+		Made by Khushi Kansara , Yash Sawant , Aniket Chaudhary 
+	</footer>
+</body>
+</html>
